@@ -8,7 +8,7 @@ class nqueens():
 	#init function of nqueens
 	def __init__(self, root):
 		#no. of queens
-		self.n = 4 
+		self.n = 8 
 		#total queens in solution for current n
 		self.queens = (0 for i in range(self.n))
 		#current index of queen
@@ -20,7 +20,7 @@ class nqueens():
 		self.root = root
 		self.root.title = ("NQUEENS")
 		self.root.configure(background='#f1f8b9')
-		self.root.minsize(410, 470)
+		self.root.minsize(400, 470)
 		self.root.resizable(True, True)
 		self.root.bind('<Configure>', lambda e: self.draw_board())
 
@@ -54,20 +54,24 @@ class nqueens():
 		self.solve()
 
 	def draw_board(self):
-		max_size = min(self.root.winfo_width(), self.root.winfo_height() - 60)
+		max_size = min(self.root.winfo_width(), self.root.winfo_height() - 70)
 		square_size = max_size//self.n
 		self.board.config(height=self.n*square_size, width=self.n*square_size)
 		self.board.delete('all')
 
-		#continue coding here
+		for i in range(self.n):
+			for j in range(self.n):
+				if (i+j) % 2:
+					self.board.create_rectangle(i*square_size, j*square_size,i*square_size+square_size, j*square_size+square_size,fill='black')
+			self.board.create_text(i*square_size+square_size//2, self.queens[i]*square_size+square_size//2, text=u'\u265B', font=('Arial', square_size//2), fill='red')
 
 	def solve(self):
 		input_n = int(self.n_var.get())
-		self.n = input_n
-		self.index = 0
-		self.solution = []
-		begin_time = time()
 		if self.n!=input_n or self.solution == []:
+			self.n = input_n
+			self.index = 0
+			self.solution = []
+			begin_time = time()
 			#Calculating solutions list for new input
 			col = range(self.n)
 			for perm in permutations(col):
@@ -91,7 +95,6 @@ class nqueens():
 def main():
 	root = Tk()
 	gui = nqueens(root)
-	#print(gui.solution)
 	root.mainloop()
 
 if __name__=="__main__": main()
